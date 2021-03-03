@@ -15,3 +15,5 @@ sed -i 's/192.168.2.1/192.168.2.3/g' package/base-files/files/bin/config_generat
 
 find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-redir/shadowsocksr-libev-alt/g' {}
 find package/*/ feeds/*/ -maxdepth 2 -path "*luci-app-bypass/Makefile" | xargs -i sed -i 's/shadowsocksr-libev-ssr-server/shadowsocksr-libev-server/g' {}
+
+sed -i 's/binary:adguardhome/binary:AdGuardHome/g' package/feeds/kenzo/luci-app-adguardhome/Makefile
