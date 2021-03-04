@@ -10,13 +10,10 @@
 # Description: OpenWrt DIY script part 1 (Before Update feeds)
 #
 
-# git clone https://github.com/jerrykuku/node-request.git ./package/lean/node-request #git node-request 依赖
-# git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git ./package/lean/luci-app-jd-dailybonus
 # rm -rf ./package/lean/luci-theme-argon  
 # git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git ./package/lean/luci-theme-argon  
 
 # Uncomment a feed source
-
 
 # Add theme
 sed -i '$a src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
@@ -28,5 +25,6 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 sed -i '$a src-git passwall https://github.com/xiaorouji/openwrt-passwall.git' feeds.conf.default
 sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git ./package/lean/luci-app-jd-dailybonus
 #https://github.com/xiaorouji/openwrt-passwall
 
