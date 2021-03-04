@@ -25,6 +25,7 @@ sed -i '$a src-git small https://github.com/kenzok8/small' feeds.conf.default
 sed -i '$a src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 sed -i '$a src-git passwall https://github.com/xiaorouji/openwrt-passwall.git' feeds.conf.default
 sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+rm -rf ./package/lean/luci-app-jd-dailybonus 
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git ./package/lean/luci-app-jd-dailybonus
 #https://github.com/xiaorouji/openwrt-passwall
 
