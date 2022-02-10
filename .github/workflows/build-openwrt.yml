@@ -73,6 +73,86 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
+      
+    - name: Generate configuration file
+      run: |
+        rm -f ./.config*
+        touch ./.config
+        #
+        # 在 cat >> .config <<EOF 到 EOF 之间粘贴你的编译配置, 需注意缩进关系
+        # 例如:
+        cat >> .config <<EOF
+        CONFIG_DEFAULT_luci-app-ssr-plus=y
+        CONFIG_DEFAULT_luci-app-ttyd=y
+        CONFIG_DEFAULT_luci-app-turboacc=y
+        CONFIG_DEFAULT_luci-app-unblockmusic=y
+        CONFIG_DEFAULT_luci-app-upnp=y
+        CONFIG_DEFAULT_luci-app-vlmcsd=y
+        CONFIG_DEFAULT_luci-app-vsftpd=y
+        CONFIG_DEFAULT_luci-app-wireguard=y
+        CONFIG_DEFAULT_luci-app-wol=y
+        CONFIG_DEFAULT_luci-app-xlnetacc=y
+        CONFIG_DEFAULT_luci-app-zerotier=y
+        
+        CONFIG_PACKAGE_luci-app-autoreboot=y
+        CONFIG_PACKAGE_luci-app-frpc=y
+        CONFIG_PACKAGE_luci-app-frps=y
+        CONFIG_PACKAGE_luci-app-baidupcs-web=y
+        
+        CONFIG_PACKAGE_luci-app-ipsec-vpnd=y
+        CONFIG_PACKAGE_luci-app-jd-dailybonus=y
+        CONFIG_PACKAGE_luci-app-netdata=y
+        CONFIG_PACKAGE_luci-app-nlbwmon=y
+        CONFIG_PACKAGE_luci-app-uhttpd=y
+        CONFIG_PACKAGE_luci-app-unblockmusic=y
+        CONFIG_PACKAGE_luci-app-unblockmusic_INCLUDE_UnblockNeteaseMusic_Go=y
+        
+        CONFIG_PACKAGE_luci-app-airplay2=y
+        CONFIG_PACKAGE_luci-app-aliyundrive-webdav=y
+        CONFIG_PACKAGE_luci-app-amule=y
+        CONFIG_PACKAGE_luci-app-aria2=y
+        CONFIG_PACKAGE_luci-app-arpbind=y
+        
+        CONFIG_PACKAGE_luci-app-ssr-plus=y
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun is not set
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_NaiveProxy is not set
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_IPT2Socks=y
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Redsocks2 is not set
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Client=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Libev_Server=y
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Client is not set
+        # CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks_Rust_Server is not set
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Client=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Libev_Server=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Simple_Obfs=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Trojan=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_V2ray_Plugin=y
+        CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Xray=y
+        
+        CONFIG_PACKAGE_luci-app-turboacc=y
+        CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_SHORTCUT_FE=y
+        CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_BBR_CCA=y
+        CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_DNSFORWARDER=y
+        CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_DNSPROXY=y
+        
+        CONFIG_PACKAGE_luci-app-wol=y
+        CONFIG_PACKAGE_luci-app-wrtbwmon=y
+        CONFIG_PACKAGE_luci-app-xlnetacc=y
+        #
+        # 4. Themes
+        #
+        CONFIG_PACKAGE_luci-theme-argon=y
+        CONFIG_PACKAGE_luci-theme-bootstrap=y
+        CONFIG_PACKAGE_luci-theme-infinityfreedom=y
+        CONFIG_PACKAGE_luci-theme-material=y
+        CONFIG_PACKAGE_luci-theme-netgear=y
+        # end of 4. Themes
+        EOF
+        #
+        # ===============================================================
+        # 
+        sed -i 's/^[ \t]*//g' ./.config
+        # make defconfig
 
     - name: Load custom configuration
       run: |
@@ -103,7 +183,7 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j1 V=s
+        make -j$(nproc) || make -j1 || make -j1 V=s
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
