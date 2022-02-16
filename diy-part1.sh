@@ -14,11 +14,12 @@
 # git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git ./package/lean/luci-theme-argon  
 
 # Uncomment a feed source
-sed -i "/helloworld/d" "feeds.conf.default"
-echo "src-git helloworld https://github.com/fw876/helloworld.git" >> "feeds.conf.default"
+# sed -i "/helloworld/d" "feeds.conf.default"
+echo "src-git-full helloworld https://github.com/fw876/helloworld.git" >> feeds.conf.default
+echo 'src-git-full passwall https://github.com/xiaorouji/openwrt-passwall' >> feeds.conf.default
 
 # Add theme
-sed -i '$a src-git infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+sed -i '$a src-git-full infinityfreedom https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
 ' feeds.conf.default
 
 # echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
